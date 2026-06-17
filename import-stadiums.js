@@ -12,9 +12,7 @@ async function importStadiums() {
         
         console.log('Clearing existing stadiums...');
         // Drop the stadiums collection
-        await mongoose.connection.db.dropCollection('stadiums').catch(() => {
-            console.log('Collection does not exist yet, will create new one');
-        });
+         await Stadium.deleteMany({});
         
         console.log('Reading stadiums file...');
         const stadiumsData = JSON.parse(
