@@ -230,7 +230,24 @@ app.use((error, req, res, next) => {
         }
     })
 });
+app.get('/import-all', async (req, res) => {
+    const { exec } = require('child_process');
 
+    exec('npm run import:all', (error, stdout, stderr) => {
+        if (error) {
+            return res.send({
+                success: false,
+                error: error.message,
+                stderr
+            });
+        }
+
+        res.send({
+            success: true,
+            output: stdout
+        });
+    });
+});
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
