@@ -13,9 +13,7 @@ async function importTeams() {
         
         console.log('Clearing existing teams...');
         // Drop the teams collection
-        await mongoose.connection.db.dropCollection('teams').catch(() => {
-            console.log('Collection does not exist yet, will create new one');
-        });
+         await Team.deleteMany({});
         
         console.log('Reading teams file...');
         const teamsData = JSON.parse(
