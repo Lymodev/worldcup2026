@@ -212,24 +212,6 @@ app.get('/', (req, res) => {
 });
 
 require('./controllers/index')(app);
-
-app.use((req, res, next) => {
-    console.log(`⚠️ 404 Not Found: ${req.method} ${req.url} from ${req.ip}`);
-    const erro = new Error('Route not found');
-    erro.status = 404;
-    next(erro);
-});
-
-app.use((error, req, res, next) => {
-    console.error(`❌ Error ${error.status || 500}: ${error.message} | ${req.method} ${req.url}`);
-    if (error.stack) console.error(error.stack);
-    res.status(error.status || 500);
-    return res.send({
-        error: {
-            message: error.message
-        }
-    })
-});
 app.get('/import-all', async (req, res) => {
     const { exec } = require('child_process');
 
@@ -248,6 +230,24 @@ app.get('/import-all', async (req, res) => {
         });
     });
 });
+app.use((req, res, next) => {
+    console.log(`⚠️ 404 Not Found: ${req.method} ${req.url} from ${req.ip}`);
+    const erro = new Error('Route not found');
+    erro.status = 404;
+    next(erro);
+});
+
+app.use((error, req, res, next) => {
+    console.error(`❌ Error ${error.status || 500}: ${error.message} | ${req.method} ${req.url}`);
+    if (error.stack) console.error(error.stack);
+    res.status(error.status || 500);
+    return res.send({
+        error: {
+            message: error.message
+        }
+    })
+});
+
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
